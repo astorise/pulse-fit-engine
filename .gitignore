@@ -18,7 +18,6 @@ tmp_garmin_base_dex/
 .claude/
 .codex/
 .gemini/
-openspec/
 .tools/
 
 # Reverse-engineering scratch space
