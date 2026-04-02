@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="screen_background">#F5F1EA</color>
+    <color name="surface_card">#FFF9F3</color>
+    <color name="surface_accent">#F8E2D0</color>
+    <color name="pill_background">#D7ECE8</color>
+    <color name="card_stroke">#D8C7BA</color>
+    <color name="text_primary">#1F1915</color>
+    <color name="text_secondary">#65574D</color>
+    <color name="color_primary">#165A72</color>
+    <color name="color_on_primary">#FFFFFF</color>
+    <color name="color_secondary">#C6505A</color>
+    <color name="color_on_secondary">#FFFFFF</color>
+</resources>

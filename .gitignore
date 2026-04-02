@@ -1,0 +1,14 @@
+.gradle/
+.gradle-*/
+.kotlin/
+.jdks/
+.idea/
+*.iml
+
+local.properties
+
+**/build/
+captures/
+
+extracted_apks_nubia_z60_ultra_2026-04-02/
+tmp_garmin_base_dex/

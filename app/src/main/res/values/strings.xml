@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pulse Fit Engine</string>
+    <string name="dashboard_title">Pulse Fit Engine</string>
+    <string name="dashboard_subtitle">Visionneuse Android Kotlin pour flux temps reel Garmin sur protocole proprietaire.</string>
+    <string name="metrics_section_title">Flux temps reel</string>
+</resources>
