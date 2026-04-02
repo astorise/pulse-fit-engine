@@ -1,9 +1,14 @@
 package com.astor.pulsefitengine
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -16,8 +21,12 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val viewModel: MainViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels {
+        MainViewModel.Factory(application)
+    }
     private val adapter = GarminMetricsAdapter()
+    private val permissionsLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +36,31 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         setupRecyclerView()
         collectState()
+        requestBluetoothPermissionsIfNeeded()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        requestBluetoothPermissionsIfNeeded()
+    }
+
+    private fun requestBluetoothPermissionsIfNeeded() {
+        val missingPermissions = requiredRuntimePermissions().filterNot(::isGranted)
+        if (missingPermissions.isNotEmpty()) {
+            permissionsLauncher.launch(missingPermissions.toTypedArray())
+        }
+    }
+
+    private fun requiredRuntimePermissions(): List<String> {
+        return buildList {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                add(Manifest.permission.BLUETOOTH_CONNECT)
+            }
+        }
+    }
+
+    private fun isGranted(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun setupRecyclerView() {

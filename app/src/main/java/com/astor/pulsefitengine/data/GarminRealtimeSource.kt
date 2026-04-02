@@ -2,9 +2,13 @@ package com.astor.pulsefitengine.data
 
 import kotlinx.coroutines.flow.Flow
 
-interface GarminRealtimeSource {
-    val label: String
-    val transportStatus: String
+data class GarminRealtimeUpdate(
+    val sourceLabel: String,
+    val transportStatus: String,
+    val samples: List<GarminMetricSample>,
+    val updatedAtMillis: Long = System.currentTimeMillis(),
+)
 
-    fun stream(): Flow<List<GarminMetricSample>>
+interface GarminRealtimeSource {
+    fun stream(): Flow<GarminRealtimeUpdate>
 }

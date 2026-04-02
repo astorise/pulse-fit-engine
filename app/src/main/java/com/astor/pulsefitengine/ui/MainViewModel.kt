@@ -1,8 +1,10 @@
 package com.astor.pulsefitengine.ui
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.astor.pulsefitengine.data.DemoGarminRealtimeSource
+import com.astor.pulsefitengine.data.BluetoothGarminRealtimeSource
 import com.astor.pulsefitengine.data.GarminMetricFormatter
 import com.astor.pulsefitengine.data.GarminMetricSample
 import com.astor.pulsefitengine.data.GarminMetricType
@@ -13,17 +15,19 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.LinkedHashMap
 import java.util.Locale
 
 class MainViewModel(
-    private val realtimeSource: GarminRealtimeSource = DemoGarminRealtimeSource(),
+    private val realtimeSource: GarminRealtimeSource,
 ) : ViewModel() {
     private val clockFormat = SimpleDateFormat("HH:mm:ss", Locale.FRANCE)
+    private val latestSamples = LinkedHashMap<GarminMetricType, GarminMetricSample>()
 
     private val _uiState = MutableStateFlow(
         MainUiState(
-            sourceLabel = realtimeSource.label,
-            transportStatus = realtimeSource.transportStatus,
+            sourceLabel = "Montre Garmin via BLE",
+            transportStatus = "Preparation du transport temps reel...",
             lastUpdate = "En attente du premier paquet",
             metrics = GarminMetricType.featured.map { type ->
                 MetricCardUiModel(
@@ -40,10 +44,15 @@ class MainViewModel(
 
     init {
         viewModelScope.launch {
-            realtimeSource.stream().collect { samples ->
-                _uiState.value = _uiState.value.copy(
-                    lastUpdate = "Derniere trame ${clockFormat.format(Date())}",
-                    metrics = buildMetricCards(samples),
+            realtimeSource.stream().collect { update ->
+                update.samples.forEach { sample ->
+                    latestSamples[sample.type] = sample
+                }
+                _uiState.value = MainUiState(
+                    sourceLabel = update.sourceLabel,
+                    transportStatus = update.transportStatus,
+                    lastUpdate = "Derniere activite ${clockFormat.format(Date(update.updatedAtMillis))}",
+                    metrics = buildMetricCards(latestSamples.values.toList()),
                 )
             }
         }
@@ -61,6 +70,20 @@ class MainViewModel(
                 updatedAt = sample?.timestampMillis?.let { "maj ${clockFormat.format(Date(it))}" }
                     ?: "pas encore recu",
             )
+        }
+    }
+
+    class Factory(
+        private val application: Application,
+    ) : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+                return MainViewModel(
+                    BluetoothGarminRealtimeSource(application),
+                ) as T
+            }
+            throw IllegalArgumentException("Unsupported ViewModel class: ${modelClass.name}")
         }
     }
 }

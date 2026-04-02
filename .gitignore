@@ -12,3 +12,18 @@ captures/
 
 extracted_apks_nubia_z60_ultra_2026-04-02/
 tmp_garmin_base_dex/
+
+# Local assistant/tooling metadata
+.agent/
+.claude/
+.codex/
+.gemini/
+openspec/
+.tools/
+
+# Reverse-engineering scratch space
+.jadx-garmin/
+.tmp-garmin-libs/
+.tmp-garmin-raw-frames.log
+.tmp-single-devicesprovider/
+.tmp_garmin_manifest.xml

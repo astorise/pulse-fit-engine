@@ -37,6 +37,8 @@ object GarminMetricFormatter {
             GarminMetricType.HEART_RATE_AVG,
             GarminMetricType.HEART_RATE_LAP -> "${value.roundToInt()} bpm"
 
+            GarminMetricType.SPO2 -> "${value.roundToInt()} %"
+
             GarminMetricType.POWER,
             GarminMetricType.POWER_AVG,
             GarminMetricType.POWER_LAP,

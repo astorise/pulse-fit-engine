@@ -6,14 +6,16 @@ import kotlinx.coroutines.flow.flow
 import kotlin.math.sin
 
 class DemoGarminRealtimeSource : GarminRealtimeSource {
-    override val label: String = "Source simulée locale"
-    override val transportStatus: String =
-        "Décodage protobuf prêt, transport propriétaire montre↔téléphone à brancher"
-
-    override fun stream(): Flow<List<GarminMetricSample>> = flow {
+    override fun stream(): Flow<GarminRealtimeUpdate> = flow {
         var tick = 0
         while (true) {
-            emit(buildSnapshot(tick))
+            emit(
+                GarminRealtimeUpdate(
+                    sourceLabel = "Source simulee locale",
+                    transportStatus = "Transport Garmin non disponible, generation locale active",
+                    samples = buildSnapshot(tick),
+                ),
+            )
             tick += 1
             delay(1_000)
         }

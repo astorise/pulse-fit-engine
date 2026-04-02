@@ -11,6 +11,7 @@ enum class GarminMetricType(
     DISTANCE(6, "DISTANCE", "Distance", "km"),
     DISTANCE_LAP(7, "DISTANCE_LAP", "Distance tour", "km"),
     HEART_RATE(13, "HEART_RATE", "Rythme cardiaque", "bpm"),
+    SPO2(10019, "REAL_TIME_SPO2", "SpO2", "%"),
     HEART_RATE_AVG(14, "HEART_RATE_AVG", "FC moyenne", "bpm"),
     HEART_RATE_LAP(15, "HEART_RATE_LAP", "FC tour", "bpm"),
     HEART_RATE_ZONE_NUMBER(22, "HEART_RATE_ZONE_NUMBER", "Zone FC"),
@@ -53,6 +54,7 @@ enum class GarminMetricType(
     companion object {
         val featured = listOf(
             HEART_RATE,
+            SPO2,
             SPEED,
             PACE,
             POWER,
