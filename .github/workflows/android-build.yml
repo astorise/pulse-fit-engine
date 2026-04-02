@@ -37,7 +37,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Run unit tests and coverage verification
-        run: ./gradlew testDebugUnitTest jacocoProtocolCoverageVerification
+        run: ./gradlew testDebugUnitTest jacocoProtocolCoverageVerification jacocoProtocolCoverageReport
 
       - name: Upload unit test report
         uses: actions/upload-artifact@v4
