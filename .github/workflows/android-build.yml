@@ -40,13 +40,13 @@ jobs:
         run: ./gradlew testDebugUnitTest jacocoProtocolCoverageVerification jacocoProtocolCoverageReport
 
       - name: Upload unit test report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: pulse-fit-engine-unit-test-report
           path: app/build/reports/tests/testDebugUnitTest/
 
       - name: Upload coverage report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: pulse-fit-engine-protocol-coverage
           path: app/build/reports/jacoco/jacocoProtocolCoverageReport/
@@ -82,7 +82,7 @@ jobs:
         run: ./gradlew assembleDebug
 
       - name: Upload debug APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: pulse-fit-engine-debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
